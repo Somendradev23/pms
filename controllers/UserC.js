@@ -45,8 +45,13 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-// Create a new user
-// Create a new user
+/**
+ * Create a new user.
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 exports.createUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -94,50 +99,96 @@ exports.createUser = async (req, res, next) => {
 };
 
 // Get a specific user by ID
+// This function retrieves a user from the database based on their ID and sends it as a JSON response.
+
+/**
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 exports.getUserById = async (req, res, next) => {
   const { userId } = req.params;
+
   try {
     const user = await UserM.findByPk(userId);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     res.json(user);
   } catch (error) {
     next(error);
   }
 };
 
-// Update a user
+/**
+ * Update a user
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Object} - The updated user object
+ */
 exports.updateUser = async (req, res, next) => {
+  // Extract userId from the request parameters
   const { userId } = req.params;
+
+  // Extract user details from the request body
   const { first_name, last_name, email, password } = req.body;
+
   try {
+    // Find the user by userId
     const user = await UserM.findByPk(userId);
+
+    // If user not found, return error message
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // Update user details
     user.first_name = first_name;
     user.last_name = last_name;
     user.email = email;
     user.password = password;
+
+    // Save the updated user details
     await user.save();
+
+    // Return the updated user object
     res.json(user);
   } catch (error) {
     next(error);
   }
 };
 
-// Delete a user
+/**
+ * Deletes a user.
+ * 
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @param {function} next - The next middleware function.
+ */
 exports.deleteUser = async (req, res, next) => {
+  // Extract the userId from the request parameters
   const { userId } = req.params;
+  
   try {
+    // Find the user by their ID
     const user = await UserM.findByPk(userId);
+    
+    // Check if the user exists
     if (!user) {
+      // Return a 404 response if the user is not found
       return res.status(404).json({ message: "User not found" });
     }
+    
+    // Delete the user
     await user.destroy();
+    
+    // Return a 204 response to indicate successful deletion
     res.status(204).end();
   } catch (error) {
+    // Pass any errors to the next middleware function
     next(error);
   }
 };

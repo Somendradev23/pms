@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
+require("dotenv").config(); 
 
 const app = express();
 const port = 3000;
@@ -25,7 +26,7 @@ app.use(cookieParser());
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(
   sessions({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    secret: process.env.SESSION_SECRET, 
     saveUninitialized: true,
     cookie: { maxAge: oneDay },
     resave: false,
