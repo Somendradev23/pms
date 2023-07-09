@@ -3,8 +3,10 @@ module.exports = (app) => {
     res.render("user/blank");
   });
 
+  // AUTH
   app.use("/login", require("./pages/auth/auth"));
 
+  // DASHBOARD
   app.use("/dashboard", require("./pages/dashboard"));
 
   // USERS

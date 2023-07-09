@@ -68,45 +68,37 @@ exports.login = async (req, res, next) => {
     // Check if the user exists
     const user = await UserM.findOne({
       where: { email: email },
-      attributes: ["user_id", "username", "email", "role", "mobileNumber", "password"]
+      attributes: ["user_id", "username", "email", "role", "mobileNumber", "password"],
     });
-    
+
     if (!user) {
       return res.status(401).json({ message: "Invalid email" });
     }
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
 
     const userData = {
-      id: user.id,
       username: user.username,
       email: user.email,
       role: user.role,
-      mobileNumber: user.mobileNumber
+      mobileNumber: user.mobileNumber,
     };
 
-    if (
-      req.headers["x-requested-with"] === "XMLHttpRequest" ||
-      req.xhr ||
-      req.headers.host != req.headers.referer
-    ) {
-      // Create and sign a JWT token
-      const token = jwt.sign({ userId: user.id }, process.env.TOKEN_KEY, {
-        expiresIn: "24h"
-      });
-      
+    // Create and sign a JWT token
+    const token = jwt.sign({ userId: user.user_id }, process.env.TOKEN_KEY, {
+      expiresIn: "24h",
+    });
+    if (req.hostname != process.env.HOST) {
       return res.json({ token: token, user: userData });
     } else {
       session = req.session;
-      session.user = userData;
-      console.log(req.session);
-      
-      return res.send(`Hey there, welcome <a href=\'/logout'>click to logout</a>`);
+      session.user = { ...userData, id: user.user_id };
+      return res.json({ token: token, user: userData });
     }
   } catch (error) {
     next(error);
