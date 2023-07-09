@@ -7,6 +7,8 @@ require("dotenv").config();
  * @param {function} next - The next middleware function.
  */
 exports.isAuthenticated = (req, res, next) => {
+  
+
   // Check if the request is an AJAX request or if the 'xhr' property is set
   // or if the host is different from the referer
   // if (req.headers["x-requested-with"] === "XMLHttpRequest" || req.xhr || req.headers.host != req.headers.referer) {
@@ -29,6 +31,10 @@ exports.isAuthenticated = (req, res, next) => {
   } else {
     // If the request is not AJAX, check if the user is logged in
     if (req.session.user) {
+      console.log("====================================");
+      console.log(req.session.user);
+      console.log("====================================");
+      req.user = req.session.user;
       next();
     } else {
       return res.status(401).json({ messages: "Unauthorized" });
@@ -44,7 +50,7 @@ exports.isAuthenticated = (req, res, next) => {
  */
 exports.isAdmin = (req, res, next) => {
   // Check if the user's role is admin
-  if (req.user.role === "admin") {
+  if (req.user.role === "ADMIN") {
     // If the user is an admin, call the next middleware
     next();
   } else {

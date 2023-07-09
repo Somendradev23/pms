@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { isAuthenticated } = require("../middlewares/Auth");
+const { isAuthenticated , isAdmin  } = require("../middlewares/Auth");
 
 // Import controllers
 const projectController = require("../controllers/ProjectC");
@@ -25,7 +25,7 @@ router.put("/tasks/:taskId", [isAuthenticated], taskController.updateTask);
 router.delete("/tasks/:taskId", [isAuthenticated], taskController.deleteTask);
 
 // User routes
-router.get("/users", [isAuthenticated], userController.getAllUsers);
+router.get("/users", [isAuthenticated , isAdmin], userController.getAllUsers);
 router.post("/users", [isAuthenticated], userController.createUser);
 router.get("/users/:userId", [isAuthenticated], userController.getUserById);
 router.put("/users/:userId", [isAuthenticated], userController.updateUser);
