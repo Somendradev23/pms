@@ -12,12 +12,11 @@ const UserM = sequelize.define(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // unique: true,
       validate: {
         isEmail: true,
       },
@@ -42,12 +41,18 @@ const UserM = sequelize.define(
     mobileNumber: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // unique: true,
     },
   },
   {
     tableName: "users",
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["email", "mobileNumber"],
+      },
+    ],
   }
 );
 

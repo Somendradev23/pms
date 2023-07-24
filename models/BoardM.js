@@ -1,18 +1,20 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/dbConfig");
 
-// Define the Comment model
-const CommentM = sequelize.define("comments", {
-  comment_id: {
+const BoardM = sequelize.define("board", {
+  board_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  comment: {
-    type: DataTypes.TEXT,
+  board_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  is_public: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
 });
 
-
-module.exports = CommentM;
+module.exports = BoardM;

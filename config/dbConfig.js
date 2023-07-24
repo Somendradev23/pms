@@ -17,8 +17,8 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   }
 })();
 
-// sequelize.sync({ alter: true }, () => {
-//   console.log("Synced db.");
-// });
+sequelize.sync({ alter: true }, () => {
+  console.log("Synced db.");
+});
 
 module.exports = sequelize;
