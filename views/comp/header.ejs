@@ -32,13 +32,13 @@
     <meta property="og:description" content="Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!" />
     <!-- CSS files -->
     <link href="<%- BaseUrl %>/dist/css/tabler.min.css?1685973381" rel="stylesheet" />
-    <!-- <link href="<%- BaseUrl %>/dist/css/tabler-flags.min.css?1685973381" rel="stylesheet" />
-    <link href="<%- BaseUrl %>/dist/css/tabler-payments.min.css?1685973381" rel="stylesheet" />
-    <link href="<%- BaseUrl %>/dist/css/tabler-vendors.min.css?1685973381" rel="stylesheet" /> -->
+    <!-- <link href="<%- BaseUrl %>/dist/css/tabler-flags.min.css?1685973381" rel="stylesheet" /> -->
+    <!-- <link href="<%- BaseUrl %>/dist/css/tabler-payments.min.css?1685973381" rel="stylesheet" /> -->
+    <link href="<%- BaseUrl %>/dist/css/tabler-vendors.min.css?1685973381" rel="stylesheet" />
     <!-- <link href="<%- BaseUrl %>/dist/css/demo.min.css?1685973381" rel="stylesheet" /> -->
-    
+
     <!-- DATA TABLE -->
-    <link href="<%- BaseUrl %>/dist/libs/datatable/css/dataTables.bootstrap5.min.css" /> 
+    <link href="<%- BaseUrl %>/dist/libs/datatable/css/dataTables.bootstrap5.min.css" />
     <!-- END DATA TABLE -->
     <style>
       @import url("https://rsms.me/inter/inter.css");
@@ -50,7 +50,7 @@
       }
     </style>
   </head>
-  <body>    
+  <body>
     <wc-toast></wc-toast>
     <div class="page">
       <!-- Navbar -->
@@ -218,6 +218,16 @@
       </header>
       <%- include("./menubar.ejs") %>
       <div class="page-wrapper">
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <h2 class="page-title"><%- title ?? "" %></h2>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Page body -->
         <div class="page-body">
-    <!--  -->
+          <!--  -->
+       
