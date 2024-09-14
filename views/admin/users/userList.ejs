@@ -1,17 +1,25 @@
 <%- include("../../comp/header.ejs") %>
 
-<!-- Creating Datatable server side rendering -->
-<table id="datatable" class="table table-striped table-bordered table-hover">
-  <thead>
-    <tr>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div class="container-xl">
+  <div class="card">
+    <div class="card-body">
+      <div id="table-default" class="table-responsive">
+        <!-- Creating Datatable server side rendering -->
+        <table id="datatable" class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th><button  class="table-sort" data-sort="sort-name">Username</button></th>
+              <th><button  class="table-sort" data-sort="sort-email">Email</button></th>
+              <th><button  class="table-sort" data-sort="sort-role">Role</button></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%- include("../../comp/footerbar.ejs") %>
 <!-- script -->
@@ -39,7 +47,7 @@
             return `
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
-                <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                <button type="button" class="btn btn-sm btn-outline-danger">Inactive</button>
               </div>
             `;
           },
