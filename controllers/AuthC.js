@@ -17,7 +17,6 @@ exports.register = async (req, res, next) => {
       username: "required",
       email: "required|email",
       password: ["required", "min:6", "regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/"],
-      role: "required",
       mobileNumber: "required",
     };
 
