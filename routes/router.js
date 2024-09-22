@@ -4,7 +4,8 @@ module.exports = (app) => {
   });
 
   // app.use("/", (req, res) => {
-  //   // res.redirect("/login");
+  //   res.send("<a href='/auth' >login</a>");
+  //   return;
   // });
 
   // AUTH
@@ -15,4 +16,7 @@ module.exports = (app) => {
 
   // USERS
   app.use("/users", require("./pages/users/users"));
+
+  // PROJECTS
+  app.use("/projects", require("./pages/project/project"));
 };
