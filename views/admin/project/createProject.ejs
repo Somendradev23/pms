@@ -1,0 +1,102 @@
+<%- include("../../comp/header.ejs") %>
+
+<div class="container-xl">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <form onsubmit="return false" class="row">
+            <div class="col-sm-10">
+              <div class="mb-3">
+                <label class="form-label required">Name</label>
+                <input name="name" type="text" class="form-control" name="example-required-input" placeholder="Required..." />
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="mb-3 mt-5">
+                <button onclick="saveProject(event , this)" type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="table-default" class="table-responsive">
+        <table id="datatable" class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../../comp/footerbar.ejs") %>
+<!-- script -->
+<%- include("../../comp/script.ejs") %>
+<script>
+  function saveProject(e, el) {
+    e.preventDefault();
+    let url = "<%- BaseUrl %>/api/projects";
+
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: JSON.stringify({
+        project_name: $("input[name='name']").val(),
+      }),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data) {
+        myToast("Project Created", { icon: { type: "success" } });
+      },
+      statusCode: {
+        400: function (xhr) {
+          $.each(xhr.responseJSON.messages[0], function (key, value) {
+            myToast(value, { icon: { type: "error" } });
+          });
+        },
+        500: function (xhr) {
+          myToast(xhr.responseJSON.message, { icon: { type: "error" } });
+        },
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    $("#datatable").DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: "<%- BaseUrl %>/api/users",
+        type: "GET",
+        dataType: "json",
+        error: function (xhr, status, error) {
+          myToast(xhr.responseJSON.messages, { icon: { type: status } });
+        },
+      },
+      columns: [
+        { data: "username" },
+        { data: "email" },
+        { data: "role" },
+        {
+          data: "actions",
+          render: function (data, type, row, meta) {
+            return `
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
+                <button type="button" class="btn btn-sm btn-outline-danger">Inactive</button>
+              </div>
+            `;
+          },
+        },
+      ],
+    });
+  });
+</script>
+<%- include("../../comp/footer.ejs") %>

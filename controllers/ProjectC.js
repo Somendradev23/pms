@@ -1,4 +1,6 @@
-const {ProjectM} = require('../models/index');
+const { ProjectM } = require("../models/index");
+
+const validator = require("validatorjs");
 
 // Get all projects
 exports.getAllProjects = async (req, res) => {
@@ -7,25 +9,28 @@ exports.getAllProjects = async (req, res) => {
     res.json(projects);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 // Create a new project
-exports.createProject = async (req, res) => {
+exports.createProject = async (req, res, next) => {
   try {
-    const { project_name, start_date, end_date, status, budget } = req.body;
+    const validation = new validator(req.body, {
+      project_name: "required",
+    });
+    if (validation.fails()) {
+
+      throw new ThrowError("ValidationError", validation.errors.all());
+    }
+
+    const { project_name } = req.body;
     const project = await ProjectM.create({
       project_name,
-      start_date,
-      end_date,
-      status,
-      budget,
     });
     res.status(201).json(project);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    next(error);
   }
 };
 
@@ -35,12 +40,12 @@ exports.getProjectById = async (req, res) => {
   try {
     const project = await ProjectM.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
     res.json(project);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -51,7 +56,7 @@ exports.updateProject = async (req, res) => {
   try {
     const project = await ProjectM.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
     project.project_name = project_name;
     project.start_date = start_date;
@@ -62,7 +67,7 @@ exports.updateProject = async (req, res) => {
     res.json(project);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -72,12 +77,12 @@ exports.deleteProject = async (req, res) => {
   try {
     const project = await ProjectM.findByPk(projectId);
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
     await project.destroy();
     res.status(204).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

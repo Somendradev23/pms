@@ -14,19 +14,19 @@ const ProjectM = sequelize.define("projects", {
   },
   start_date: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   end_date: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   budget: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
