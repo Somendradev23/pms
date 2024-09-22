@@ -10,6 +10,12 @@ const userController = require("../controllers/UserC");
 const commentController = require("../controllers/CommentC");
 const authController = require("../controllers/AuthC");
 
+
+// Authentication routes
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+router.get("/profile", [isAuthenticated], authController.getProfile);
+
 // Project routes
 router.get("/projects", [isAuthenticated], projectController.getAllProjects);
 router.post("/projects", [isAuthenticated], projectController.createProject);
@@ -37,10 +43,5 @@ router.post("/tasks/:taskId/comments", [isAuthenticated], commentController.crea
 router.get("/comments/:commentId", [isAuthenticated], commentController.getCommentById);
 router.put("/comments/:commentId", [isAuthenticated], commentController.updateComment);
 router.delete("/comments/:commentId", [isAuthenticated], commentController.deleteComment);
-
-// Authentication routes
-router.post("/register", authController.register);
-router.post("/login", authController.login);
-router.get("/profile", [isAuthenticated], authController.getProfile);
 
 module.exports = router;
