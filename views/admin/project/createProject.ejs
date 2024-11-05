@@ -73,7 +73,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "<%- BaseUrl %>/api/users",
+        url: "<%- BaseUrl %>/api/projects",
         type: "GET",
         dataType: "json",
         error: function (xhr, status, error) {
@@ -81,9 +81,7 @@
         },
       },
       columns: [
-        { data: "username" },
-        { data: "email" },
-        { data: "role" },
+        { data: "project_name" },
         {
           data: "actions",
           render: function (data, type, row, meta) {

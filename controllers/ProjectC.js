@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { ProjectM } = require("../models/index");
 
 const validator = require("validatorjs");
@@ -5,8 +6,29 @@ const validator = require("validatorjs");
 // Get all projects
 exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await ProjectM.findAll();
-    res.json(projects);
+    const { draw, start, length, search, order, columns } = req.query;
+
+    // Construct the search query
+    const searchQuery = {
+      [Op.or]: [{ project_name: { [Op.like]: `%${search.value}%` } }],
+    };
+
+    // Construct the order query
+    const orderQuery = [];
+    for (let i = 0; i < order.length; i++) {
+      const { column, dir } = order[i];
+      const columnName = columns[column].data;
+      orderQuery.push([columnName, dir]);
+    }
+
+    const { count, rows: projects } = await ProjectM.findAndCountAll({
+      where: searchQuery,
+      order: orderQuery,
+      offset: Number(start),
+      limit: Number(length),
+    });
+
+    res.json({ draw, recordsTotal: count, recordsFiltered: count, data: projects });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -20,7 +42,6 @@ exports.createProject = async (req, res, next) => {
       project_name: "required",
     });
     if (validation.fails()) {
-
       throw new ThrowError("ValidationError", validation.errors.all());
     }
 
